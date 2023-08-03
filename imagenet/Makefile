@@ -1,9 +1,38 @@
 include $(abs_top_srcdir)/Makefrag
 
 tests = \
-	resnet50 \
-	mobilenet \
-	# alexnet \
+	test_moca \
+	test_vel \
+	test_comp \
+	test_all \
+	test_moca1 \
+	test_vel1 \
+	test_comp1 \
+	test_all1 \
+	test_moca2 \
+	test_vel2 \
+	test_comp2 \
+	test_all2 \
+	test_xr_moca \
+	test_xr_vel \
+	test_xr_comp \
+	test_xr_all \
+	test_noc_moca \
+	test_noc_vel \
+	test_noc_comp \
+	test_noc_all \
+	test_noc_moca1 \
+	test_noc_vel1 \
+	test_noc_comp1 \
+	test_noc_all1 \
+	test_noc_moca2 \
+	test_noc_vel2 \
+	test_noc_comp2 \
+	test_noc_all2 \
+	test_noc_xr_moca \
+	test_noc_xr_vel \
+	test_noc_xr_comp \
+	test_noc_xr_all \
 
 tests_baremetal = $(tests:=-baremetal)
 runs_baremetal = $(addsuffix .run,$(tests_baremetal))
@@ -30,6 +59,7 @@ CFLAGS := $(CFLAGS) \
 	-fno-tree-loop-distribute-patterns \
 	-march=rv64gc -Wa,-march=rv64gc \
 	-lm \
+	-lpthread \
 	-lgcc \
 	-I$(abs_top_srcdir)/riscv-tests \
 	-I$(abs_top_srcdir)/riscv-tests/env \
@@ -51,7 +81,8 @@ CFLAGS_BAREMETAL := \
 	-T $(BENCH_COMMON)/test.ld \
 	-DBAREMETAL=1 \
 
-all: $(tests_baremetal) $(tests_linux) $(tests_pk)
+#all: $(tests_baremetal) $(tests_linux) $(tests_pk)
+all: $(tests_linux)
 
 vpath %.c $(src_dir)
 
