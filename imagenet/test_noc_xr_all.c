@@ -24,7 +24,7 @@
 
 #include "include/gemmini.h"
 #include "include/gemmini_nn.h"
-#include "include/workload_noc.h"
+#include "include/workload.h"
 
 struct thread_args{
     int cid, num_array, start_tracker;
@@ -84,7 +84,7 @@ void *thread_test(void *arg){
       }
       */
 
-      uint64_t this_runtime = workload_function(queue_id, cid, false); // ToDo: weight direct dram
+      uint64_t this_runtime = workload_function(queue_id, cid); // ToDo: weight direct dram
 
       //for debugging
       total_queue_runtime[queue_id] = this_runtime;
