@@ -15,6 +15,11 @@
 #include "include/gemmini_params.h"
 #include "include/gemmini.h"
 
+#include "include/rerocc.h"
+#include "include/aurora_gemmini.h"
+
+//#include "include/gemmini_vector_re.h"
+
 #ifdef BAREMETAL
 #undef assert
 #define assert(expr) \
@@ -179,6 +184,16 @@ static void matrelu(elem_t in[DIM][DIM], elem_t out[DIM][DIM]) {
   for (size_t r = 0; r < DIM; r++)
     for (size_t c = 0; c < DIM; c++)
       out[r][c] = in[r][c] > 0 ? in[r][c] : 0;
+}
+
+static void matrelu6(elem_t in[DIM][DIM], elem_t out[DIM][DIM], int scale) {
+  int max = 6 * scale;
+
+  for (size_t r = 0; r < DIM; r++)
+    for (size_t c = 0; c < DIM; c++) {
+      elem_t positive = in[r][c] > 0 ? in[r][c] : 0;
+      out[r][c] = positive > max ? max : positive;
+    }
 }
 
 static void transpose(elem_t in[DIM][DIM], elem_t out[DIM][DIM]) {
