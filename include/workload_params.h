@@ -192,42 +192,6 @@ static int gemmini_noc_optim[NUM_TYPE_WORKLOAD][NUM_ARRAY_GROUP] = {{5, 4, 1, 8,
 static int noc_optim_need_swap[NUM_CORE] = {0};
 
 
-// SET 0: mixed, SET 1: light, SET 2: heavy
-// SET 0: mixed, SET 1: light, SET 2: heavy, 3: xr
-#if SET == 3
-#include "imagenet/funct_ritnet.h"
-#include "imagenet/funct_midasnet.h"
-#include "imagenet/funct_rcnnnet.h"
-#include "imagenet/funct_handnet.h"
-#include "imagenet/funct_fbnet.h"
-#endif
-#if SET == 2
-#include "imagenet/funct_resnet_1.h"
-#include "imagenet/funct_alexnet_1.h"
-#include "imagenet/funct_yolonet_1.h"
-#include "imagenet/funct_googlenet_1.h"
-#include "imagenet/funct_bertbase_1.h"
-#endif
-#if SET == 1
-#include "imagenet/funct_res18net_1.h"
-#include "imagenet/funct_squeezenet_1.h"
-#include "imagenet/funct_kwsnet_1.h"
-#include "imagenet/funct_yololitenet_1.h"
-// actually bert small
-#include "imagenet/funct_bertmedium_1.h"
-#endif
-#if SET == 0
-#include "imagenet/funct_resnet_1.h"
-#include "imagenet/funct_alexnet_1.h"
-#include "imagenet/funct_bertbase_1.h"
-#include "imagenet/funct_res18net_1.h"
-#include "imagenet/funct_squeezenet_1.h"
-//#include "imagenet/funct_kwsnet_1.h"
-#include "imagenet/funct_yololitenet_1.h"
-//#include "imagenet/funct_bertmedium_1.h"
-#endif
-
-
 #if SET == 1
 #define RESNUM 6
 #define ALEXNUM 7
