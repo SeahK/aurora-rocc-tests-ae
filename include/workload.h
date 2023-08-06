@@ -314,74 +314,74 @@ uint64_t workload_function(int queue_id, size_t cid){
 #if SET != 1 
   if(workload_type == ALEXNET){
 #if FULL == 1
-    if(workload_class) cycles = alexnet_function_1(-1, false, false, false, num_array, cid);
-    else cycles = alexnet_function_11(-1, false, false, false, num_array, cid);
+    if(workload_class) cycles = alexnet_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = alexnet_function_11(-1, false, false, false, false, num_array, cid);
 #else 
-    cycles = alexnet_function_1(-1, false, false, false, num_array, cid);
+    cycles = alexnet_function_1(-1, false, false, false, false, num_array, cid);
 #endif
     //total_runtime = *(cycles+14);
   }
   if(workload_type == RESNET){
 #if FULL == 1
-    if(workload_class) cycles = resnet_function_1(-1, false, false, false, num_array, cid);
-    else cycles = resnet_function_11(-1, false, false, false, num_array, cid);
+    if(workload_class) cycles = resnet_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = resnet_function_11(-1, false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+72);
 #else
-    cycles = resnet_function_1(-1, false, false, false, num_array, cid);
+    cycles = resnet_function_1(-1, false, false, false, false, num_array, cid);
 #endif
   }
 #endif
 #if SET == 2
   if(workload_type == YOLONET){
-    if(workload_class) cycles = yolonet_function_1(-1, false, false, false, num_array, cid);
-    else cycles = yolonet_function_11(-1, false, false, false, num_array, cid);
+    if(workload_class) cycles = yolonet_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = yolonet_function_11(-1, false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+26);
   }
   if(workload_type == GOOGLENET){
-    if(workload_class) cycles = googlenet_function_1(-1, false, false, false, num_array, cid);
-    else cycles = googlenet_function_11(-1, false, false, false, num_array, cid); 
+    if(workload_class) cycles = googlenet_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = googlenet_function_11(-1, false, false, false, false, num_array, cid); 
     //total_runtime = *(cycles+71);
   }
 #endif
 #if SET != 1
   if(workload_type == BERTBASE){
 #if FULL == 1
-    if(workload_class)  cycles = bertbase_function_1(-1, false, false, false, num_array, cid);
-    else cycles = bertbase_function_11(-1, false, false, false, num_array, cid); 
+    if(workload_class)  cycles = bertbase_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = bertbase_function_11(-1, false, false, false, false, num_array, cid); 
     //total_runtime = *(cycles+71);
 #else
-    cycles = bertbase_function_1(-1, false, false, false, num_array, cid);
+    cycles = bertbase_function_1(-1, false, false, false, false, num_array, cid);
 #endif
   }
 #endif
 #if SET == 1
   if(workload_type == KWSNET){
-    if(workload_class) cycles = kwsnet_function_1(-1, false, false, false, num_array, cid);
-    else cycles = kwsnet_function_11(-1, false, false, false, num_array, cid);
+    if(workload_class) cycles = kwsnet_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = kwsnet_function_11(-1, false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+40);
   }
 #endif
 #if SET != 2
   if(workload_type == RES18NET){
-    if(workload_class) cycles = res18net_function_1(-1, false, false, false, num_array, cid);
-    else cycles = res18net_function_11(-1, false, false, false, num_array, cid);
+    if(workload_class) cycles = res18net_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = res18net_function_11(-1, false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+31);
   }
   if(workload_type == SQUEEZENET){
-    if(workload_class) cycles = squeezenet_function_1(false, false, false, num_array, cid);
-    else cycles = squeezenet_function_11(false, false, false, num_array, cid);
+    if(workload_class) cycles = squeezenet_function_1(false, false, false, false, num_array, cid);
+    else cycles = squeezenet_function_11(false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+29);
   }
   if(workload_type == YOLOLITENET){
-    if(workload_class) cycles = yololitenet_function_1(false, false, false, num_array, cid);
-    else cycles = yololitenet_function_11(false, false, false, num_array, cid);
+    if(workload_class) cycles = yololitenet_function_1(false, false, false, false, num_array, cid);
+    else cycles = yololitenet_function_11(false, false, false, false, num_array, cid);
     //total_runtime = *(cycles+14);
   }
 #endif
 #if SET == 1
   if(workload_type == BERTSMALL){
-    if(workload_class) cycles = bertmedium_function_1(-1, false, false, false, num_array, cid);
-    else cycles = bertmedium_function_11(-1, false, false, false, num_array, cid); 
+    if(workload_class) cycles = bertmedium_function_1(-1, false, false, false, false, num_array, cid);
+    else cycles = bertmedium_function_11(-1, false, false, false, false, num_array, cid); 
     //total_runtime = *(cycles+71);
   }
 #endif
