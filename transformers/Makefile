@@ -1,7 +1,6 @@
 include $(abs_top_srcdir)/Makefrag
 
 tests = \
-	transformer \
 
 tests_baremetal = $(tests:=-baremetal)
 runs_baremetal = $(addsuffix .run,$(tests_baremetal))
