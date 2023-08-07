@@ -11,12 +11,6 @@
 #define NUM_CORE 4
 // in common
 #define OP 3
-#define total_workloads 200
-#define SEED 0
-#define TARGET_SCALE 1
-#define CAP_SCALE 1.01
-#define TARGET_SCALE1 0.83
-#define TARGET_SCALE2 1.2
 
 //#define DEBUG 1
 #define PRINT 0
@@ -172,7 +166,7 @@ int main() {
     }
     printf("done profiling\n\n");
     printf("start workload creation\n");
-    workload_create(total_workloads, SEED, TARGET_SCALE, CAP_SCALE);
+    workload_create(total_workloads, TARGET_SCALE, CAP_SCALE);
     printf("workload type: ");
     for(int j = 0; j < total_workloads; j++){
       printf(" %d,", total_queue_type[j]);

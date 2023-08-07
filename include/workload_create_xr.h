@@ -36,34 +36,34 @@
 
 
 
-int rand_seed(uint32_t seed, bool init) {
+int rand_create(bool init) {
   static uint32_t x = 777;
   if(init) x = 777;
-  x = x * (1664525 + seed) + 1013904223;
+  x = x * (1664525) + 1013904223;
   return x >> 24;
 }
 
-void workload_create(int num_workload, uint32_t seed, float target_scale){ 
+void workload_create(int num_workload, float target_scale){ 
   // qos < 0 -> mixed
   // qos >= 0 -> workload dispatch qos apart, qos ways at once
   for(int i = 0; i < MAX_WORKLOAD; i++)
     total_queue_status[i]= -1;
 
-  rand_seed(seed, true); // initialize random function
+  rand_create(true); // initialize random function
 
   int num_type = 5;
 
   int first_dispatch_interval = (int)((1e9/(60*num_type)));
   printf("first dispatch interval: %d\n", first_dispatch_interval);
   int num_workload_group = ceil_divide_int(num_workload*2, num_type); // assign 2x
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
+  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale))) ;
   
   for(int i = 0; i < num_workload_group; i++){
     for(int j = 0; j < num_type; j++){
@@ -80,7 +80,7 @@ void workload_create(int num_workload, uint32_t seed, float target_scale){
         total_queue_dispatch[index] = first_dispatch_interval*j;
       }
       else{
-	uint64_t jitter = rand_seed(seed, false) % 200000;
+	uint64_t jitter = rand_create(false) % 200000;
 	uint64_t this_interval = (uint64_t)(((target_cycles[workload_type] - 100000) + jitter) * target_scale);
 	//printf("index %d interval: %llu\n", index, this_interval);
         total_queue_dispatch[index] = total_queue_dispatch[index - num_type] + this_interval;

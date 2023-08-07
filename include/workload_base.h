@@ -227,7 +227,7 @@ int get_max_index(int cid, uint64_t current_cycle){
         int num_array_index = 2;
         uint64_t expected_cycle = sp_cycles[num_array_index][workload_type];
         int64_t this_score = (1000000 * old) / expected_cycle;
-	    if(slack < expected_cycle || slack <= 0)
+	if(slack <= 0)
 	      this_score = 0;
         //int64_t this_score = (10000 * expected_cycle) / slack;
 #if PRINT == 1

@@ -34,14 +34,14 @@
 //#include "imagenet/funct_bertmedium_1.h"
 #endif
 
-int rand_seed(uint32_t seed, bool init) {
+int rand_create(bool init) {
   static uint32_t x = 777;
   if(init) x = 777;
-  x = x * (1664525 + seed) + 1013904223;
+  x = x * (1664525) + 1013904223;
   return x >> 24;
 }
 
-int workload_type_assign(uint32_t seed){
+int workload_type_assign(){
   // currently only batch1
 // heavy
 #if SET == 2
@@ -49,7 +49,7 @@ int workload_type_assign(uint32_t seed){
   int rand_base = 0;
 
   static int id = 1;
-  uint32_t rand_out = rand_seed(seed, false);
+  uint32_t rand_out = rand_create(false);
   int r = rand_out % rand_mod + rand_base;
 
   if (r < ALEXNUM)
@@ -68,7 +68,7 @@ int workload_type_assign(uint32_t seed){
   int rand_base = 0;
 
   static int id = 1;
-  uint32_t rand_out = rand_seed(seed, false);
+  uint32_t rand_out = rand_create(false);
   int r = rand_out % rand_mod + rand_base;
 
   if (r < KWSNUM)
@@ -87,7 +87,7 @@ int workload_type_assign(uint32_t seed){
   int rand_base = 0;
 
   static int id = 1;
-  uint32_t rand_out = rand_seed(seed, false);
+  uint32_t rand_out = rand_create(false);
   int r = rand_out % rand_mod + rand_base;
 
   if (r < ALEXNUM)
@@ -108,13 +108,13 @@ int workload_type_assign(uint32_t seed){
   return id;
 }
 
-void workload_create(int num_workload, uint32_t seed, float target_scale, float cap_scale){ 
+void workload_create(int num_workload, float target_scale, float cap_scale){ 
   // qos < 0 -> mixed
   // qos >= 0 -> workload dispatch qos apart, qos ways at once
   for(int i = 0; i < MAX_WORKLOAD; i++)
     total_queue_status[i]= -1;
 
-  rand_seed(seed, true); // initialize random function
+  rand_create(true); // initialize random function
 
 #if SET == 1
   uint64_t interval = (rand_cycles[4]*KWSNUM + rand_cycles[5]*RES18NUM + rand_cycles[6]*SQUEEZENUM + rand_cycles[7]*YOLOLITENUM + rand_cycles[9]*BERTSMALLNUM) / (KWSNUM+RES18NUM+SQUEEZENUM+YOLOLITENUM+BERTSMALLNUM);
@@ -133,19 +133,13 @@ void workload_create(int num_workload, uint32_t seed, float target_scale, float 
   int first_dispatch_interval = (int)(interval / group);
   printf("interval for set %d: %llu, first dispatch interval: %d\n", SET, interval, first_dispatch_interval);
   int num_workload_group = ceil_divide_int(num_workload+2*group, group);
-  printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  //printf("interval test: %d\n", (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale))) ;
-  
+  for(int s = 0; s < SEED; s++){
+    printf("interval test: %d\n", (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale)));
+  }
   for(int i = 0; i < num_workload_group; i++){
     for(int j = 0; j < group; j++){
       int index = group * i + j;
-      int workload_type = workload_type_assign(seed);
+      int workload_type = workload_type_assign();
       //int workload_type = rand_base + rand_seed(seed) % rand_mod;
       total_queue_type[index] = workload_type; 
       total_queue_target[index] = target_scale * target_cycles[workload_type];
@@ -157,11 +151,11 @@ void workload_create(int num_workload, uint32_t seed, float target_scale, float 
         total_queue_dispatch[index] = first_dispatch_interval*j;
       }
       else{
-	uint64_t this_interval = (int)(interval * (0.01*(rand_seed(seed, false)%INTERVAL) + cap_scale));
+	uint64_t this_interval = (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale));
 	//printf("index %d interval: %llu\n", index, this_interval);
         total_queue_dispatch[index] = total_queue_dispatch[index - group] + this_interval;
 	if(i % 15 == 12) total_queue_dispatch[index] += (interval*2.1); // to prevent overloading
-        //total_queue_dispatch[index] = total_queue_dispatch[index - group] + rand_cycles[total_queue_type[index - group]] * (0.1*(rand_seed(seed, false)%5) + cap_scale); // is it enough?
+        //total_queue_dispatch[index] = total_queue_dispatch[index - group] + rand_cycles[total_queue_type[index - group]] * (0.1*(rand_create(false)%5) + cap_scale); // is it enough?
       }
     }
   }
@@ -199,7 +193,7 @@ void workload_create(int num_workload, uint32_t seed, float target_scale, float 
           if(type == total_queue_type[i-1]) {
 //#endif
               while(type == total_queue_type[i]){
-                type = workload_type_assign(seed);
+                type = workload_type_assign();
               }
               printf("new type: %d, old type: %d\n", type, total_queue_type[i]);
               total_queue_type[i] = type;

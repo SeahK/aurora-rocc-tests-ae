@@ -1,6 +1,41 @@
 #include <pthread.h>
 #include <sched.h>
 
+#define total_workloads 200
+#define FULL 0
+#define SEED 5
+// QoS H, L
+#define TARGET_SCALE1 0.83
+#define TARGET_SCALE2 1.2
+
+#if SET == 3
+#if NOC == 0
+#define TARGET_SCALE 1.0
+#elif NOC == 1
+#define TARGET_SCALE 1.15
+#endif
+#else
+#define TARGET_SCALE 1
+#endif
+
+#if NOC == 0
+#if SET == 0
+#define CAP_SCALE 0.85
+#elif SET == 1
+#define CAP_SCALE 0.70
+#elif SET == 2
+#define CAP_SCALE 0.84
+#endif
+#else
+#if SET == 0
+#define CAP_SCALE 1.01 
+#elif SET == 1
+#define CAP_SCALE 0.83
+#elif SET == 2
+#define CAP_SCALE 1.04
+#endif
+#endif
+
 // set 0: mixed
 // set 1: light
 // set 2: heavy
@@ -50,7 +85,7 @@
 #endif
 
 #ifndef FULL
-#define FULL 1
+#define FULL 0
 #endif
 
 #ifndef NOC_OPTIM 
