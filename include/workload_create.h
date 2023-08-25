@@ -154,8 +154,10 @@ void workload_create(int num_workload, float target_scale, float cap_scale){
 	uint64_t this_interval = (int)(interval * (0.01*(rand_create(false)%INTERVAL) + cap_scale));
 	//printf("index %d interval: %llu\n", index, this_interval);
         total_queue_dispatch[index] = total_queue_dispatch[index - group] + this_interval;
-	if(i % 15 == 12) total_queue_dispatch[index] += (interval*2.1); // to prevent overloading
-        //total_queue_dispatch[index] = total_queue_dispatch[index - group] + rand_cycles[total_queue_type[index - group]] * (0.1*(rand_create(false)%5) + cap_scale); // is it enough?
+#if NOC == 1
+	if(i % 11 == 10) total_queue_dispatch[index] += (interval*2.1); // to prevent overloading
+#endif
+	//total_queue_dispatch[index] = total_queue_dispatch[index - group] + rand_cycles[total_queue_type[index - group]] * (0.1*(rand_create(false)%5) + cap_scale); // is it enough?
       }
     }
   }

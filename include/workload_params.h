@@ -3,7 +3,7 @@
 
 #define total_workloads 200
 #define FULL 0
-#define SEED 5
+#define SEED 2
 // QoS H, L
 #define TARGET_SCALE1 0.83
 #define TARGET_SCALE2 1.2
@@ -12,7 +12,7 @@
 #if NOC == 0
 #define TARGET_SCALE 1.0
 #elif NOC == 1
-#define TARGET_SCALE 1.15
+#define TARGET_SCALE 1.2
 #endif
 #else
 #define TARGET_SCALE 1
@@ -22,17 +22,17 @@
 #if SET == 0
 #define CAP_SCALE 0.85
 #elif SET == 1
-#define CAP_SCALE 0.70
+#define CAP_SCALE 0.72//0.70
 #elif SET == 2
-#define CAP_SCALE 0.84
+#define CAP_SCALE 0.89//0.88
 #endif
 #else
 #if SET == 0
-#define CAP_SCALE 1.01 
+#define CAP_SCALE 0.98//0.95 
 #elif SET == 1
-#define CAP_SCALE 0.83
+#define CAP_SCALE 0.75
 #elif SET == 2
-#define CAP_SCALE 1.04
+#define CAP_SCALE 1.00//0.95
 #endif
 #endif
 
@@ -152,7 +152,7 @@ pthread_mutex_t ex_queue_mutex;
 static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/30, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/45, 1e9/45, 1e9/50, 1e9/40, 1e9/35};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {11631637, 12890079, 7327589, 5607691, 8183652, 5227839, 2049409, 2184277, 24321810, 4568806};
 #else
-static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/40, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/45, 1e9/45, 1e9/50, 1e9/40, 1e9/35};
+static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/40, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/35, 1e9/45, 1e9/50, 1e9/40, 1e9/30};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {9205806, 11384575, 6658393, 4671794, 7739816, 4868501, 1954311, 2059897, 23742640, 4445361};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {10048360, 11518812, 6730644, 4831530, 7484774, 4926520, 1894553, 2097425, 23820081, 4461869};
 #endif
@@ -226,7 +226,7 @@ static int gemmini_noc_optim[NUM_TYPE_WORKLOAD][NUM_ARRAY_GROUP] = {{5, 4, 1, 8,
 #endif
 static int noc_optim_need_swap[NUM_CORE] = {0};
 
-
+/*
 #if SET == 1
 #define RESNUM 6
 #define ALEXNUM 7
@@ -239,17 +239,18 @@ static int noc_optim_need_swap[NUM_CORE] = {0};
 #define BERTBASENUM 3
 #define BERTSMALLNUM 14
 #else
-#define RESNUM 5//6
-#define ALEXNUM 5//7
-#define YOLONUM 5//10
-#define GOOGLENUM 5//13
-#define KWSNUM 5//8
-#define RES18NUM 5//13
-#define SQUEEZENUM 5//32
-#define YOLOLITENUM 5//30
-#define BERTBASENUM 5//3
-#define BERTSMALLNUM 5//14
-#endif
+*/
+#define RESNUM 5
+#define ALEXNUM 5
+#define YOLONUM 5
+#define GOOGLENUM 5
+#define KWSNUM 5
+#define RES18NUM 5
+#define SQUEEZENUM 5
+#define YOLOLITENUM 5
+#define BERTBASENUM 5
+#define BERTSMALLNUM 5
+//#endif
 
 int hashed_gemmini_pair(int gemmini_id){
    if(gemmini_id == 0)

@@ -84,7 +84,13 @@ void workload_create(int num_workload, float target_scale){
 	uint64_t this_interval = (uint64_t)(((target_cycles[workload_type] - 100000) + jitter) * target_scale);
 	//printf("index %d interval: %llu\n", index, this_interval);
         total_queue_dispatch[index] = total_queue_dispatch[index - num_type] + this_interval;
-	if(i % 20 == 13) total_queue_dispatch[index] += (target_cycles[workload_type] * target_scale); // to prevent overloading
+#if NOC == 1
+	if(i % 12 == 10) total_queue_dispatch[index] += (target_cycles[workload_type] * target_scale); // to prevent overloading
+#else
+	if(i % 16 == 10) total_queue_dispatch[index] += (target_cycles[workload_type] * target_scale);
+#endif
+
+
       }
     }
   }
