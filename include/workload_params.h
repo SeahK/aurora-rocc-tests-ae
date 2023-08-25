@@ -3,7 +3,11 @@
 
 #define total_workloads 200
 #define FULL 0
+#if SET == 1
 #define SEED 2
+#else
+#define SEED 5
+#endif
 // QoS H, L
 #define TARGET_SCALE1 0.83
 #define TARGET_SCALE2 1.2
