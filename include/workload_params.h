@@ -150,7 +150,7 @@
 #define SUB_MODEL_SIZE 20
 #endif
 
-// 0: different block size (# layer) per model, 1: fixed # layer per block 
+// 0: different # layer per block, 1: fixed # layer per block 
 #define SUB_MODEL_MODE 1 // for baseline 
 
 #ifndef BAREMETAL
