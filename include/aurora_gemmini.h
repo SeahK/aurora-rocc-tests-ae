@@ -587,6 +587,21 @@ static void tiled_opcode_matmul_nn_default(size_t dim_I, size_t dim_J, size_t di
 
   int real_cycle = -1;
   float alpha = -1; // ToDo
+
+#if SUB_MODEL_MODE == 1
+  if (curr_block[cid] != -1){
+    if((int)(layer_pointer[cid] / SUB_MODEL_SIZE) != curr_block[cid]){
+#if PRINT == 1
+	printf("cid %d current block %d current layer %d skipped\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+	return;
+    }
+  }
+#if PRINT == 1
+  printf("cid %d current block %d current layer %d execute\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+#endif
+
 #if CALC_MEM == 1 
   num_array = compute_repartition(layer_pointer[cid], cid, num_array);
   int workload_id = workload_running[cid];
@@ -646,6 +661,17 @@ static void tiled_opcode_matmul_default(size_t dim_I, size_t dim_J, size_t dim_K
 
   int real_cycle = -1;
   float alpha = -1; // ToDo
+#if SUB_MODEL_MODE == 1
+  if (curr_block[cid] != -1){
+    if((int)(layer_pointer[cid] / SUB_MODEL_SIZE) != curr_block[cid]){
+#if PRINT == 1
+	printf("cid %d current block %d current layer %d skipped\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+	return;
+    }
+  }
+#endif
+
 #if CALC_MEM == 1 
   num_array = compute_repartition(layer_pointer[cid], cid, num_array);
   int workload_id = workload_running[cid];
@@ -941,6 +967,21 @@ static void tiled_opcode_resadd_default(size_t I, size_t J,
   
   int real_cycle = -1;
   float alpha = 1; // ToDo
+
+#if SUB_MODEL_MODE == 1
+  if (curr_block[cid] != -1){
+    if((int)(layer_pointer[cid] / SUB_MODEL_SIZE) != curr_block[cid]){
+#if PRINT == 1
+	printf("cid %d current block %d current layer %d skipped\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+	return;
+    }
+  }
+#if PRINT == 1
+  printf("cid %d current block %d current layer %d execute\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+#endif
+
 #if CALC_MEM == 1
   num_array = compute_repartition(layer_pointer[cid], cid, num_array);
   int workload_id = workload_running[cid];
@@ -1774,6 +1815,20 @@ static void tiled_opcode_conv_default(
 
   int real_cycle = -1;
   float alpha = -1; // ToDo
+#if SUB_MODEL_MODE == 1
+  if (curr_block[cid] != -1){
+    if((int)(layer_pointer[cid] / SUB_MODEL_SIZE) != curr_block[cid]){
+#if PRINT == 1
+	printf("cid %d current block %d current layer %d skipped\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+	return;
+    }
+  }
+#if PRINT == 1
+  printf("cid %d current block %d current layer %d execute\n", cid, curr_block[cid], layer_pointer[cid]);
+#endif
+#endif
+
 #if CALC_MEM == 1
   num_array = compute_repartition(layer_pointer[cid], cid, num_array);
   int workload_id = workload_running[cid];

@@ -289,48 +289,7 @@ int compute_repartition(int layer_num, int cid, int old_num_array){
     int queue_id = workload_running[cid];
     int workload_type = total_queue_type[queue_id];
     bool perform_mutex = false;
-    /*
-#if (SET == 1 || SET == 3) 
-    if(workload_type == 0)
-        perform_mutex = (layer_num == 1 || layer_num == 4 || layer_num == 5);
-    else if(workload_type == 1)
-        perform_mutex = (layer_num % 6 == 5);
-    else if(workload_type == 2)
-        perform_mutex = (layer_num == 4 || layer_num == 7 || layer_num == 10 || layer_num == 15 || layer_num == 17);
-    else if(workload_type == 3)
-        perform_mutex = (layer_num == 2 || layer_num == 5 || layer_num == 17 || layer_num == 29 || layer_num == 41);
-    else if(workload_type == 8)
-        //perform_mutex = (layer_num % 32 == 27 || layer_num % 32 == 0 || layer_num % 32 == 10) && (layer_num != 0);
-        perform_mutex = (layer_num % 32 == 27 || layer_num % 32 == 0) && (layer_num != 0);
-    else if(workload_type == 4)
-        perform_mutex = (layer_num % 6 == 0) && (layer_num != 0);
-    else if(workload_type == 5)
-        perform_mutex = (layer_num == 4 || layer_num == 11 || layer_num == 18 || layer_num == 25);
-    else if(workload_type == 6)
-        perform_mutex = (layer_num == 2 || layer_num == 12);
-    else if(workload_type == 7)
-        perform_mutex = (layer_num == 2);
-    else if(workload_type == 9)
-        perform_mutex = (layer_num == 24 || layer_num == 48 || layer_num == 72);
-    else if(workload_type == 10)
-        perform_mutex = (layer_num % 10 == 2 || layer_num % 10 == 6);
-    else if(workload_type == 11)
-        perform_mutex = (layer_num % 72 == 2 || layer_num % 72 == 11 || layer_num % 72 == 21 || layer_num % 72 == 41 || layer_num % 72 == 0) && (layer_num != 0);
-    else if(workload_type == 12)
-        perform_mutex = (layer_num % 24 == 0 || layer_num % 24 == 3 || layer_num % 24 == 6 || layer_num % 24 == 10) && (layer_num != 0);
-    else if(workload_type == 13)
-        perform_mutex = (layer_num == 5 || layer_num == 8 || layer_num == 13 || layer_num == 16 || ((layer_num % 3 == 0) && (layer_num > 20)));
-    else if(workload_type == 14)
-        perform_mutex = (layer_num == 4 || layer_num == 11 || layer_num == 17 || layer_num == 23 || ((layer_num % 3 == 2) && (layer_num > 28 && layer_num < 60)));
-#else
-    uint64_t expected_cycle = sp_layer_cycles[2][workload_type][layer_num];
-    if(expected_cycle > 200000)
-	perform_mutex = true;
-#endif 
-#if PRINT==1
-	printf("cid %d layer %d perform mutex: %d\n", cid, layer_num, perform_mutex);
-#endif
-	*/
+
     // skip before first layer
     if(layer_num == 0)
 	return core_num_gemmini[cid];
@@ -539,45 +498,7 @@ int compute_repartition(int layer_num, int cid, int old_num_array){
     int queue_id = workload_running[cid];
     int workload_type = total_queue_type[queue_id];
     bool perform_mutex = false;
-    /*
-#if (SET == 1 || SET == 3) 
-    if(workload_type == 0)
-        perform_mutex = (layer_num == 1 || layer_num == 4 || layer_num == 5);
-    else if(workload_type == 1)
-        perform_mutex = (layer_num % 6 == 5);
-    else if(workload_type == 2)
-        perform_mutex = (layer_num == 4 || layer_num == 7 || layer_num == 10 || layer_num == 15 || layer_num == 17);
-    else if(workload_type == 3)
-        perform_mutex = (layer_num == 2 || layer_num == 5 || layer_num == 17 || layer_num == 29 || layer_num == 41);
-    else if(workload_type == 8)
-        //perform_mutex = (layer_num % 32 == 27 || layer_num % 32 == 0 || layer_num % 32 == 10) && (layer_num != 0);
-        perform_mutex = (layer_num % 32 == 27 || layer_num % 32 == 0) && (layer_num != 0);
-    else if(workload_type == 4)
-        perform_mutex = (layer_num % 6 == 0) && (layer_num != 0);
-    else if(workload_type == 5)
-        perform_mutex = (layer_num == 4 || layer_num == 11 || layer_num == 18 || layer_num == 25);
-    else if(workload_type == 6)
-        perform_mutex = (layer_num == 2 || layer_num == 12);
-    else if(workload_type == 7)
-        perform_mutex = (layer_num == 2);
-    else if(workload_type == 9)
-        perform_mutex = (layer_num == 24 || layer_num == 48 || layer_num == 72);
-    else if(workload_type == 10)
-        perform_mutex = (layer_num % 10 == 2 || layer_num % 10 == 6);
-    else if(workload_type == 11)
-        perform_mutex = (layer_num % 72 == 2 || layer_num % 72 == 11 || layer_num % 72 == 21 || layer_num % 72 == 41 || layer_num % 72 == 0) && (layer_num != 0);
-    else if(workload_type == 12)
-        perform_mutex = (layer_num % 24 == 0 || layer_num % 24 == 3 || layer_num % 24 == 6 || layer_num % 24 == 10) && (layer_num != 0);
-    else if(workload_type == 13)
-        perform_mutex = (layer_num == 5 || layer_num == 8 || layer_num == 13 || layer_num == 16 || ((layer_num % 3 == 0) && (layer_num > 20)));
-    else if(workload_type == 14)
-        perform_mutex = (layer_num == 4 || layer_num == 11 || layer_num == 17 || layer_num == 23 || ((layer_num % 3 == 2) && (layer_num > 28 && layer_num < 60)));
-#else
-    uint64_t expected_cycle = sp_layer_cycles[2][workload_type][layer_num];
-    if(expected_cycle > 200000)
-	perform_mutex = true;
-#endif 
-*/
+   
     // skip before first layer
     if(layer_num == 0)
 	return core_num_gemmini[cid];

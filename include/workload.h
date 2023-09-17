@@ -301,6 +301,7 @@ uint64_t workload_function(int queue_id, size_t cid){
   }
   uint64_t* cycles;
   uint64_t total_runtime;
+  curr_block[cid] = -1;
 
   /*
   int status = total_queue_status[queue_id];
@@ -463,6 +464,7 @@ void prerun_profile(int cid, int workload_type, int num_array){
   uint64_t* cycles;
   uint64_t total_runtime;
   layer_pointer[cid] = 0;
+  curr_block[cid] = -1;
 
   if(SET == 1){
       if(!(workload_type == 4 || workload_type == 5 || workload_type == 6 || workload_type == 7 || workload_type == 9))

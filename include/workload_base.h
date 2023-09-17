@@ -572,6 +572,7 @@ uint64_t workload_block_function(int queue_id, size_t cid){
   int workload_type = total_queue_type[queue_id];
   int workload_class = total_queue_class[queue_id];
   int num_block = workload_blocks[workload_type];
+  layer_pointer[cid] = 0;
 
   for (int i = 0; i < num_array; i++) {
     rerocc_assign(OP3, i);
@@ -588,7 +589,15 @@ uint64_t workload_block_function(int queue_id, size_t cid){
   bool part4 = group_status < 4;
   */
   uint64_t start = read_cycles();
+  curr_block[cid] = 0;
+#if SUB_MODEL_MODE == 1
+  int block = -1; // change to blocking using layer pointer
+  while(layer_pointer[cid] < workload_num_layers[workload_type]){ 
+#else
+  // use per model block
   for(int block = 0; block < num_block; block++){
+#endif
+
 #if SET != 3
 #if SET != 1 
       if(workload_type == ALEXNET){
@@ -684,7 +693,12 @@ uint64_t workload_block_function(int queue_id, size_t cid){
 #endif
       dram_util[cid] = 0;
       current_mem_score[cid] = 0;
+#if SUB_MODEL_MODE == 1
+      curr_block[cid] ++;
+      if(layer_pointer[cid] < workload_num_layers[workload_type]){ 
+#else
       if(block < num_block - 1){
+#endif
           uint64_t start_lock = read_cycles();
           int new_num_array = -1;
           int turn = 0;
@@ -694,7 +708,7 @@ uint64_t workload_block_function(int queue_id, size_t cid){
             pthread_mutex_unlock(&ex_queue_mutex);
             if(new_num_array == -1){
               int i = 0;
-	      int wait_cycle = 100000;//(mode == 4) ? 100000 : 20000;
+	      int wait_cycle = 100000;
               while(i < wait_cycle){
                 i ++;
               }
@@ -785,6 +799,7 @@ void prerun_block_profile(int cid, int workload_type, int num_array){
   uint64_t* cycles;
   uint64_t total_runtime;
   layer_pointer[cid] = 0;
+  curr_block[cid] = -1;
 
   if(SET == 1){
       if(!(workload_type == 4 || workload_type == 5 || workload_type == 6 || workload_type == 7 || workload_type == 9))

@@ -26,17 +26,17 @@
 #if SET == 0
 #define CAP_SCALE 0.85
 #elif SET == 1
-#define CAP_SCALE 0.72//0.70
+#define CAP_SCALE 0.75 //0.72
 #elif SET == 2
-#define CAP_SCALE 0.89//0.88
+#define CAP_SCALE 0.94 //0.89
 #endif
 #else
 #if SET == 0
-#define CAP_SCALE 0.98//0.95 
+#define CAP_SCALE 0.98 
 #elif SET == 1
-#define CAP_SCALE 0.75
+#define CAP_SCALE 0.78 //0.75
 #elif SET == 2
-#define CAP_SCALE 1.00//0.95
+#define CAP_SCALE 1.08 //1.00
 #endif
 #endif
 
@@ -143,6 +143,16 @@
 
 #endif
 
+// for baseline modeling
+#if (SET == 1 || SET == 3)
+#define SUB_MODEL_SIZE 15 
+#else
+#define SUB_MODEL_SIZE 20
+#endif
+
+// 0: different block size (# layer) per model, 1: fixed # layer per block 
+#define SUB_MODEL_MODE 1 // for baseline 
+
 #ifndef BAREMETAL
 pthread_barrier_t barrier_global;
 pthread_mutex_t ex_queue_mutex;
@@ -156,7 +166,7 @@ pthread_mutex_t ex_queue_mutex;
 static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/30, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/45, 1e9/45, 1e9/50, 1e9/40, 1e9/35};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {11631637, 12890079, 7327589, 5607691, 8183652, 5227839, 2049409, 2184277, 24321810, 4568806};
 #else
-static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/40, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/35, 1e9/45, 1e9/50, 1e9/40, 1e9/30};
+static uint64_t target_cycles[NUM_TYPE_WORKLOAD] = {1e9/40, 1e9/40, 1e9/80, 1e9/80, 1e9/80, 1e9/80, 1e9/100, 1e9/100, 1e9/25, 1e9/80, 1e9/35, 1e9/45, 1e9/50, 1e9/40, 1e9/35};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {9205806, 11384575, 6658393, 4671794, 7739816, 4868501, 1954311, 2059897, 23742640, 4445361};
 //static int rand_cycles[NUM_TYPE_WORKLOAD] = {10048360, 11518812, 6730644, 4831530, 7484774, 4926520, 1894553, 2097425, 23820081, 4461869};
 #endif
@@ -174,6 +184,7 @@ static int sp_layer_mem_ideal[3][NUM_TYPE_WORKLOAD][MAX_LAYERS] = {0};
 //static int workload_group[NUM_TYPE_WORKLOAD] = {1, 4, 2, 2, 1, 2, 3, 1,
 static int workload_blocks[NUM_TYPE_WORKLOAD] = {3, 5, 3, 4, 3, 3, 1, 1, 10, 4, 3, 4, 2, 6, 6};
 static int layer_pointer[NUM_CORE] = {0};
+static int curr_block[NUM_CORE] = {0}; //for baseline (else -1)
 static int last_queue_id = 0;
 static int mode = 0;
 static bool global_end = false;
